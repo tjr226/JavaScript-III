@@ -56,21 +56,37 @@ CharacterStats.prototype.takeDamage = function () {
 function Humanoid(humanoidAttrs) {
   CharacterStats.call(this, humanoidAttrs);
   this.team = humanoidAttrs.team,
-  this.weapons = humanoidAttrs.weapons,
-  this.language = humanoidAttrs.language;
+    this.weapons = humanoidAttrs.weapons,
+    this.language = humanoidAttrs.language;
 }
 
 Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function () {
   return `${this.name} offers a greeting in ${this.language}.`
 }
-  // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+// Stretch task: 
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// * Create two new objects, one a villain and one a hero and fight it out with methods!
 
-  
+function Hero(heroAttrs) {
+  Humanoid.call(this, heroAttrs);
+}
 
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.damage = function (hurtObject) {
+  hurtObject.healthPoints = hurtObject.healthPoints - 20;
+  console.log(hurtObject.takeDamage());
+  if (hurtObject.healthPoints < 0) {
+    console.log(hurtObject.destroy());
+  };
+}
+
+function Villain(badAttrs) {
+  Hero.call(this, badAttrs);
+}
+
+Villain.prototype = Object.create(Hero.prototype);
 
 
 
@@ -133,6 +149,41 @@ const archer = new Humanoid({
   language: 'Elvish',
 });
 
+const superHeroine = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 3,
+    width: 3,
+    height: 3,
+  },
+  healthPoints: 10,
+  name: 'Good Amy',
+  team: 'Forest Treehuggers',
+  weapons: [
+    'Bow',
+    'Dagger',
+  ],
+  language: 'Elvish',
+});
+
+const superVillainess = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 6,
+    width: 6,
+    height: 6,
+  },
+  healthPoints: 10,
+  name: 'Bad Amy',
+  team: 'Forest Burners',
+  weapons: [
+    'Bow',
+    'Dagger',
+  ],
+  language: 'Orc',
+});
+
+
 console.log(mage.createdAt); // Today's date
 console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
 console.log(swordsman.healthPoints); // 15
@@ -145,7 +196,20 @@ console.log(mage.takeDamage()); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
-  // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+console.log(superHeroine.greet());
+superHeroine.damage(archer);
+
+console.log(superVillainess.greet());
+superVillainess.damage(superHeroine);
+
+
+
+// Stretch task: 
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+
+
+
+
